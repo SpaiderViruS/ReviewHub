@@ -2,8 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import MainComponent from '@/components/index.vue';
 
+// 404
+import EmptyPage from '@/components/emptyPage.vue';
+
 const routes = [
-  { path: '/', component: MainComponent }
+  { path: '/', component: MainComponent },
+
+  // 404
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: EmptyPage }
 ]
 
 const router = createRouter({
