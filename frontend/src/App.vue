@@ -68,4 +68,8 @@ nav a:first-of-type {
   background: #f5f5f5;
   color: #444;
 }
+
+.v-container {
+  background-color: transparent !important;
+}
 </style>
