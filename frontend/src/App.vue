@@ -1,35 +1,32 @@
 <template>
-  <header>
-
-    <div class="wrapper">
-      <MainComponent />
-    </div>
-  </header>
-
+  <!-- Техи -->
+  <div v-if="isMaintenance" class="maintenance">
+    <h1>Сайт временно недоступен</h1>
+    <p>Мы проводим технические работы. Пожалуйста, зайдите позже </p>
+  </div>
+  <div v-else id="app">
+    <navBar />
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
-import MainComponent from './components/index.vue'
+import MainComponent from './components/index.vue';
+import navBar from './components/navBar.vue';
+
+// Техи
+const isMaintenance = import.meta.env.VITE_MAINTENANCE === 'true';
 
 components: { MainComponent }
 </script>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
 nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {
@@ -50,23 +47,7 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
+/* @media (min-width: 1024px) {
   nav {
     text-align: left;
     margin-left: -1rem;
@@ -75,5 +56,16 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+} */
+
+.maintenance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background: #f5f5f5;
+  color: #444;
 }
 </style>
