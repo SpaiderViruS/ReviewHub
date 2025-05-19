@@ -7,7 +7,8 @@ const logger = require('./middleware/log.middleware');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+const itemRouter = require('./routes/item.router');
+const dictRouter = require('./routes/dictionary.router');
 
 const upload = multer();
 
@@ -30,7 +31,10 @@ app.use(upload.single('file'));
 
 app.use(cors());
 
-app.use(logger)
+app.use(logger);
+
+app.use('/item', itemRouter);
+app.use('/dictionary', dictRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
