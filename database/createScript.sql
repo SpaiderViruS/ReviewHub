@@ -26,7 +26,8 @@ CREATE TABLE items (
 -- Жанры
 CREATE TABLE genres (
   id SERIAL PRIMARY KEY,
-  name TEXT UNIQUE NOT NULL
+  value_full TEXT NOT NULL,
+  value_short TEXT NOT NULL
 );
 
 -- Связь items ↔ genres (многие ко многим)
