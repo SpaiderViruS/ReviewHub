@@ -17,6 +17,9 @@ html[data-theme='light'] {
 
   --color-input-bg: #ffffff;
   --color-input-border: rgba(60, 60, 60, 0.2);
+
+  --text-color-primary: #111;
+  --text-color-secondary: #555;
 }
 
 /* Тёмная тема с прозрачным фоном */
@@ -33,6 +36,9 @@ html[data-theme='dark'] {
 
   --color-input-bg: rgba(60, 60, 60, 0.2);
   --color-input-border: rgba(255, 255, 255, 0.2);
+
+  --text-color-primary: #d0d0d0;
+  --text-color-secondary: #aaa;
 }
 
 /* Сброс отступов и типографика */
