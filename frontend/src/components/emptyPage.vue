@@ -19,17 +19,17 @@
 .error-code {
   font-size: 6rem;
   font-weight: bold;
-  color: #b0b0b0;
+  color: var(--color-heading);
 }
 
 .error-message {
   font-size: 1.5rem;
-  color: #cccccc;
+  color: var(--color-text-soft);
 }
 
 .back-btn {
-  background-color: #444;
-  color: #ddd;
+  background-color: var(--color-accent);
+  color: var(--color-button-text);
   border-radius: 6px;
   font-weight: bold;
   padding: 10px 24px;
@@ -37,6 +37,7 @@
 }
 
 .back-btn:hover {
-  background-color: #666;
+  background-color: #d73752;
 }
+
 </style>

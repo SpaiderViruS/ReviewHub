@@ -20,6 +20,10 @@ html[data-theme='light'] {
 
   --text-color-primary: #111;
   --text-color-secondary: #555;
+
+  --color-accent: #e94560;
+  --color-accent-hover: #c9324f;
+  --color-button-text: #ffffff;
 }
 
 /* Тёмная тема с прозрачным фоном */
@@ -39,6 +43,12 @@ html[data-theme='dark'] {
 
   --text-color-primary: #d0d0d0;
   --text-color-secondary: #aaa;
+
+  --color-bg-base: #1e1e2f;
+  --color-accent: #e94560;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #c4c4c4;
+  --color-highlight: #0f3460;
 }
 
 /* Сброс отступов и типографика */

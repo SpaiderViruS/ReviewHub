@@ -69,16 +69,15 @@ export default {
 .headline {
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--text-color-primary);
+  color: var(--color-text-primary);
 }
 
 .subtext {
-  color: var(--text-color-secondary);
+  color: var(--color-text-secondary);
   font-size: 1.2rem;
   margin-top: 0.5rem;
 }
 
-/* Категории с фоновым изображением */
 .category-card {
   background-size: cover;
   background-position: center 25%;
@@ -97,7 +96,7 @@ export default {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45); /* затемнение изображения */
+  background-color: rgba(0, 0, 0, 0.45);
 }
 
 .category-card:hover {
@@ -138,8 +137,8 @@ a.router-link-exact-active {
 
 /* Кнопка "Перейти в каталог" */
 .catalog-btn {
-  background-color: #444;
-  color: #ddd;
+  background-color: var(--color-highlight);
+  color: var(--color-text-primary);
   padding: 12px 28px;
   font-size: 1rem;
   border-radius: 6px;

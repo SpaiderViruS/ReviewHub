@@ -47,8 +47,13 @@ const toggleTheme = () => {
 }
 
 .nav-link:hover {
-  background-color: var(--color-border-hover);
-  color: var(--color-heading);
+  background-color: rgba(233, 69, 96, 0.1);
+  color: #e94560;
+}
+
+.router-link-exact-active {
+  background-color: rgba(233, 69, 96, 0.2);
+  color: #e94560;
 }
 
 .changeTheme {
