@@ -69,11 +69,11 @@ export default {
 .headline {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #d0d0d0;
+  color: var(--text-color-primary);
 }
 
 .subtext {
-  color: #aaa;
+  color: var(--text-color-secondary);
   font-size: 1.2rem;
   margin-top: 0.5rem;
 }
