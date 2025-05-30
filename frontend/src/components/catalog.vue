@@ -53,9 +53,9 @@
           <v-card class="content-card" :to="`/item/${item.id}`">
             <v-img :src="item.cover" height="200px" />
             <v-card-title class="text-wrap">{{ item.title }}</v-card-title>
-            <v-card-subtitle class="text-grey">{{ item.year }} • {{ item.genre }}</v-card-subtitle>
+            <v-card-subtitle class="text-grey">{{ item.release_year }} • {{ item.genres.join(', ') }}</v-card-subtitle>
             <v-card-text>
-              ⭐ {{ item.rating }} / 10
+              ⭐ {{ item.average_rating }} / 10
             </v-card-text>
           </v-card>
         </v-col>
@@ -77,9 +77,7 @@ import { useDictionaries } from '@/helpers/useDictionaries';
 const $api = inject('$api')
 
 // Примеры данных
-const items = ref([
-  { id: 1, title: 'Тестовый', genre: 'Фантастика', year: 2014, rating: 8.6, cover: '/images/posters/test.jpg' }
-])
+const items = ref([])
 
 const genres = ref([]);
 
@@ -98,7 +96,9 @@ const filteredItems = computed(() => {
   }
 
   if (selectedGenre.value) {
-    result = result.filter(i => i.genre === selectedGenre.value)
+    result = result.filter(i =>
+      i.genres?.includes(selectedGenre.value.value_short)
+    )
   }
 
   if (sortOption.value === 'По рейтингу') {
@@ -115,6 +115,9 @@ const filteredItems = computed(() => {
 onMounted(async () => {
   const result = await useDictionaries($api)
   genres.value = result.genres
+
+  const allItems = await $api.get('/item/');
+  items.value = allItems.data;
 })
 </script>
 
