@@ -1,9 +1,9 @@
 const db = require('../db');
 
 class itemController {
-  async getFilm(req, res, next) {
+  async getItems(req, res, next) {
     try {
-      const data = db.query(
+      const data = await db.query(
         `
           SELECT
             f.id,
@@ -12,9 +12,17 @@ class itemController {
             t.value_full AS type_name,
             f.description,
             f.release_year,
-            f.cover_url
+            f.cover_url,
+            ROUND(AVG(r.rating), 1) AS average_rating,
+            COUNT(r.rating) AS rating_count,
+            ARRAY_REMOVE(ARRAY_AGG(DISTINCT g.value_short), NULL) AS genres
           FROM items AS f
-          JOIN item_types AS t ON t.id = f.type_id;
+          JOIN item_types AS t ON t.id = f.type_id
+          LEFT JOIN ratings AS r ON r.item_id = f.id
+          LEFT JOIN item_genres ig ON ig.item_id = f.id
+          LEFT JOIN genres g ON g.id = ig.genre_id
+          GROUP BY f.id, t.value_full
+          ORDER BY f.title;
         `
       );
 
