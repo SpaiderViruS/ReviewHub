@@ -3,6 +3,6 @@ const router = new Router();
 
 const itemController = require('../controllers/item.controller');
 
-router.get('/', itemController.getFilm);
+router.get('/', itemController.getItems);
 
 module.exports = router;
