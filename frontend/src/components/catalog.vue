@@ -85,7 +85,6 @@ const search = ref('');
 const selectedGenre = ref(null);
 const sortOption = ref(null);
 
-// const genres = [ 'Фантастика', 'RPG', 'Антиутопия', 'Драма', 'Экшен' ]
 const sortOptions = [ 'По рейтингу', 'По году', 'По алфавиту' ]
 
 const filteredItems = computed(() => {
