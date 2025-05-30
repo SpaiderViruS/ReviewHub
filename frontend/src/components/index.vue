@@ -42,22 +42,22 @@ export default {
         {
           label: '🎬 Фильмы',
           route: '#',
-          image: '/images/filmCategory.jpg'
+          image: '/images/filmCategory.png'
         },
         {
           label: '🎮 Игры',
           route: '#',
-          image: '/images/gamesCategory.jpg'
+          image: '/images/gamesCategory.png'
         },
         {
           label: 'Сериалы',
           route: '#',
-          image: '/images/serialCategory.jpg'
+          image: '/images/serialCategory.png'
         },
         {
           label: 'Аниме',
           route: '#',
-          image: '/images/animeCategory.jpg'
+          image: '/images/animeCategory.png'
         }
       ];
       return categories;
