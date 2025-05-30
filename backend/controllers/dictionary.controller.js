@@ -1,6 +1,6 @@
 
 const db = require('../db')
-const allowedTables = ['item_genres', 'genres']
+const allowedTables = ['item_genres', 'genres', 'item_types']
 
 class dictionaryController {
   async getData(req, res) {
@@ -14,19 +14,6 @@ class dictionaryController {
   
       const data = await db.query(`SELECT * FROM ${dictName}`);
       const rows = data.rows;
-  
-      for (const row of rows) {
-        if (row.icon_id) {
-          const file = await db.query(
-            `SELECT file_bin FROM files WHERE id = $1`,
-            [row.icon_id]
-          );
-  
-          if (file.rows[0]?.file_bin) {
-            row.file_bin = file.rows[0].file_bin.toString('base64');
-          }
-        }
-      }
   
       res.status(200).json({ data: rows });
     } catch (err) {
