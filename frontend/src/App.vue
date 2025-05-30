@@ -12,12 +12,19 @@
   </div>
 </template>
 <script setup>
-// import { RouterLink, RouterView } from 'vue-router'
+import { onMounted, inject } from 'vue'
+import { useDictionaries } from '@/helpers/useDictionaries'
 import MainComponent from './components/index.vue';
 import navBar from './components/navBar.vue';
 
 // Техи
 const isMaintenance = import.meta.env.VITE_MAINTENANCE === 'true';
+
+// Загрузка справочников
+const $api = inject('$api')
+onMounted(async () => {
+  await useDictionaries($api)
+})
 
 components: { MainComponent }
 </script>
