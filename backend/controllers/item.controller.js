@@ -31,6 +31,42 @@ class itemController {
       res.status(400).json(err.message);
     }
   }
+
+  async getCurrentItem(req, res, next) {
+    try {
+      const id = req.params.id;
+
+      if (!id) throw new Error("Отсутвует идентификатор item")
+
+      const data = await db.query(
+        `
+          SELECT
+            f.id,
+            f.type_id,
+            f.title,
+            t.value_full AS type_name,
+            f.description,
+            f.release_year,
+            f.cover_url,
+            ROUND(AVG(r.rating), 1) AS average_rating,
+            COUNT(r.rating) AS rating_count,
+            ARRAY_REMOVE(ARRAY_AGG(DISTINCT g.value_short), NULL) AS genres
+          FROM items AS f
+          JOIN item_types AS t ON t.id = f.type_id
+          LEFT JOIN ratings AS r ON r.item_id = f.id
+          LEFT JOIN item_genres ig ON ig.item_id = f.id
+          LEFT JOIN genres g ON g.id = ig.genre_id
+          WHERE f.id = $1
+          GROUP BY f.id, t.value_full
+          ORDER BY f.title
+        `, [ id ])
+
+      res.status(200).json(data.rows);
+    } catch (err) {
+      console.log(err)
+      res.status(400).json(err.message);
+    }
+  }
 }
 
 module.exports = new itemController();
