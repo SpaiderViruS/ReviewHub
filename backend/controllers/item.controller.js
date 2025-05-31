@@ -61,7 +61,7 @@ class itemController {
           ORDER BY f.title
         `, [ id ])
 
-      res.status(200).json(data.rows);
+      res.status(200).json(data.rows[0]);
     } catch (err) {
       console.log(err)
       res.status(400).json(err.message);
