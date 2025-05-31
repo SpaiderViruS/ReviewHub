@@ -2,6 +2,11 @@
   <nav class="nav">
     <router-link to="/" class="nav-link">Главная</router-link>
     <router-link to="/catalog" class="nav-link">Каталог</router-link>
+      
+    <div class="mb-0 mt-auto ml-auto authorization">
+      <router-link to="/login" class="nav-link">Авторизация</router-link>
+    </div>
+    <!-- <router-link to="/catalog" class="ml-auto nav-link">Авторизация</router-link> -->
     <div class="changeTheme">
       <v-btn @click="toggleTheme" :color="theme === 'dark' ? 'white' : 'black'" class="ml-auto" icon>
         <v-icon :icon="theme === 'dark' ? 'custom:SunIcon' : 'custom:moonIcon'" />
@@ -56,7 +61,13 @@ const toggleTheme = () => {
   color: #e94560;
 }
 
-.changeTheme {
-  margin-left: auto;
+.authorization {
+  /* background-color: #e94560; */
+  border-radius: 8px;
+  padding: 0.2rem 0.5rem;
 }
+
+/* .changeTheme {
+  margin-left: auto;
+} */
 </style>

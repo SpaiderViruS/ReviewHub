@@ -8,6 +8,14 @@ export default {
       baseURL: API_BASE_URL,
     });
 
+    api.interceptors.request.use(config => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
+
     api.$get = (url, config) => api.get(url, config);
     api.$post = (url, data, config) => api.post(url, data, config);
     api.$put = (url, data, config) => api.put(url, data, config);
