@@ -1,5 +1,19 @@
 <template>
   <nav class="nav">
+    <div class="burger" @click="isMobileMenuOpen = !isMobileMenuOpen">
+      <v-icon>mdi-menu</v-icon>
+    </div>
+
+    <div class="mobile-menu" v-if="isMobileMenuOpen">
+      <router-link to="/" class="nav-link">Главная</router-link>
+      <router-link to="/catalog" class="nav-link">Каталог</router-link>
+      <router-link v-if="!user" to="/login" class="nav-link">Авторизация</router-link>
+      <router-link v-else to="/profile" class="nav-link">{{ user.user_nickname }}</router-link>
+      <v-btn v-if="user" @click="logout" class="exit-btn">Выйти</v-btn>
+    </div>
+
+    <!-- Основное меню -->
+    <div class="nav-container">
     <router-link to="/" class="nav-link">Главная</router-link>
     <router-link to="/catalog" class="nav-link">Каталог</router-link>
       
@@ -20,6 +34,7 @@
         <v-icon :icon="theme === 'dark' ? 'custom:SunIcon' : 'custom:moonIcon'" />
       </v-btn>
     </div>
+    </div>
   </nav>
 </template>
 <script setup>
@@ -31,6 +46,7 @@ const router = useRouter();
 const { user, clearUser } = useUser();
 
 const theme = ref('dark');
+const isMobileMenuOpen = ref(false)
 
 onMounted(() => {
   const storedTheme = localStorage.getItem('theme') || 'dark';
@@ -56,7 +72,6 @@ const goToProfile = () => {
 </script>
 <style scoped>
 .nav {
-  display: flex;
   gap: 1.5rem;
   padding: 1.2rem 2rem;
   background: var(--color-background-soft);
@@ -116,5 +131,37 @@ const goToProfile = () => {
   background-color: #f44336;
   color: white;
   margin-right: 5px;
+}
+
+.nav-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+    margin-left: auto;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
 }
 </style>
