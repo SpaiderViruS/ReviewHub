@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainComponent from '@/components/index.vue';
 import catalog from '@/components/views/catalog.vue';
 import authorization from '@/components/views/authorization.vue';
+import registration from '@/components/views/registration.vue';
 
 // 404
 import EmptyPage from '@/components/views/emptyPage.vue';
@@ -11,6 +12,7 @@ const routes = [
   { path: '/', component: MainComponent },
   { path: '/catalog', component: catalog },
   { path: '/login', component: authorization },
+  { path: '/registration', component: registration },
 
   // 404
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: EmptyPage }
