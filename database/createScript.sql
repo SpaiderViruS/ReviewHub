@@ -9,6 +9,8 @@ CREATE TABLE item_types (
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
+  surname character varying(120),
+  nickname character varying(120),
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL
 );
