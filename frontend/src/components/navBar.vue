@@ -3,10 +3,18 @@
     <router-link to="/" class="nav-link">Главная</router-link>
     <router-link to="/catalog" class="nav-link">Каталог</router-link>
       
-    <div class="mb-0 mt-auto ml-auto authorization">
+    <div class="mb-0 mt-auto ml-auto authorization" v-if="!user">
       <router-link to="/login" class="nav-link">Авторизация</router-link>
     </div>
-    <!-- <router-link to="/catalog" class="ml-auto nav-link">Авторизация</router-link> -->
+
+    <div v-else class="mb-0 mt-auto ml-auto user-profile">
+      <div class="profile-box" @click="goToProfile">
+        <v-icon :icon="'custom:userIcon'" class="mr-2"></v-icon>
+        {{ user.user_nickname }}
+      </div>
+      <v-btn class="exit-btn" @click.stop="logout">Выйти</v-btn>
+    </div>
+
     <div class="changeTheme">
       <v-btn @click="toggleTheme" :color="theme === 'dark' ? 'white' : 'black'" class="ml-auto" icon>
         <v-icon :icon="theme === 'dark' ? 'custom:SunIcon' : 'custom:moonIcon'" />
@@ -15,20 +23,35 @@
   </nav>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUser } from '@/components/store/userStore';
 
-const theme = ref('dark')
+const router = useRouter();
+const { user, clearUser } = useUser();
+
+const theme = ref('dark');
 
 onMounted(() => {
-  const storedTheme = localStorage.getItem('theme') || 'dark'
-  theme.value = storedTheme
-  document.documentElement.setAttribute('data-theme', theme.value)
+  const storedTheme = localStorage.getItem('theme') || 'dark';
+  theme.value = storedTheme;
+  document.documentElement.setAttribute('data-theme', theme.value);
 })
 
 const toggleTheme = () => {
   theme.value = theme.value === 'dark' ? 'light' : 'dark'
   document.documentElement.setAttribute('data-theme', theme.value)
   localStorage.setItem('theme', theme.value)
+}
+
+const logout = () => {
+  clearUser();
+  router.push('/')
+}
+
+const goToProfile = () => {
+  console.log(`profile`)
+  // router.push('/profile')
 }
 </script>
 <style scoped>
@@ -62,12 +85,36 @@ const toggleTheme = () => {
 }
 
 .authorization {
-  /* background-color: #e94560; */
   border-radius: 8px;
   padding: 0.2rem 0.5rem;
 }
 
-/* .changeTheme {
-  margin-left: auto;
-} */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.2rem;
+  color: var(--color-text);
+
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.user-profile:hover {
+  background-color: #d6405c;
+}
+
+.profile-box {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.exit-btn {
+  background-color: #f44336;
+  color: white;
+  margin-right: 5px;
+}
 </style>
