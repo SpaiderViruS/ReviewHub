@@ -3,12 +3,14 @@ const cors = require('cors');
 const multer = require('multer');
 
 const logger = require('./middleware/log.middleware');
+const authMiddleware = require('./middleware/auth.middleware');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const itemRouter = require('./routes/item.router');
 const dictRouter = require('./routes/dictionary.router');
+const userRouter = require('./routes/users.router');
 
 const upload = multer();
 
@@ -35,6 +37,9 @@ app.use(logger);
 
 app.use('/item', itemRouter);
 app.use('/dictionary', dictRouter);
+app.use('/users', userRouter)
+
+// app.use('/test', authMiddleware, rotuer)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
