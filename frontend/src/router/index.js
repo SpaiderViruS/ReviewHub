@@ -4,6 +4,7 @@ import MainComponent from '@/components/index.vue';
 import catalog from '@/components/views/catalog.vue';
 import authorization from '@/components/views/authorization.vue';
 import registration from '@/components/views/registration.vue';
+import itemDetails from '@/components/views/itemDetails.vue';
 
 // 404
 import EmptyPage from '@/components/views/emptyPage.vue';
@@ -13,6 +14,8 @@ const routes = [
   { path: '/catalog', component: catalog },
   { path: '/login', component: authorization },
   { path: '/registration', component: registration },
+
+  { path: '/item/:id', component: itemDetails },
 
   // 404
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: EmptyPage }
