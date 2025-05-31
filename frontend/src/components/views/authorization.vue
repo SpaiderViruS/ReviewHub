@@ -34,7 +34,7 @@
 
           <div class="text-center mt-3">
             <small>Нет аккаунта?
-              <router-link to="/register">Зарегистрироваться</router-link>
+              <router-link to="/registration">Зарегистрироваться</router-link>
             </small>
           </div>
         </v-card>
@@ -44,7 +44,12 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUser } from '@/components/store/userStore';
+
+const router = useRouter();
+const { setUser } = useUser();
 
 const email = ref('')
 const password = ref('')
@@ -64,10 +69,12 @@ async function handleLogin() {
       password: password.value
     });
 
-    // TODO: получать токен
-    localStorage.setItem('token', data.token);
-    
-    // router.push('/profile');
+    if (data) {
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+    }
+
+    router.push('/');
   } catch (err) {
     console.error('Ошибка входа:', err.response?.data?.message || err.message);
   }
