@@ -44,11 +44,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 
 const email = ref('')
 const password = ref('')
 const formValid = ref(false)
+
+const $api = inject('$api')
 
 const rules = {
   required: v => !!v || 'Поле обязательно',
@@ -57,15 +59,15 @@ const rules = {
 
 async function handleLogin() {
   try {
-    const { data } = await $api.post('/auth/login', {
-      email: form.login,
-      password: form.password
+    const { data } = await $api.post('/users/login', {
+      email: email.value,
+      password: password.value
     });
 
     // TODO: получать токен
     localStorage.setItem('token', data.token);
     
-    router.push('/profile');
+    // router.push('/profile');
   } catch (err) {
     console.error('Ошибка входа:', err.response?.data?.message || err.message);
   }
