@@ -4,5 +4,6 @@ const router = new Router();
 const itemController = require('../controllers/item.controller');
 
 router.get('/', itemController.getItems);
+router.get('/:id', itemController.getCurrentItem);
 
 module.exports = router;
