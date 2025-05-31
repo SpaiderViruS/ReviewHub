@@ -30,7 +30,16 @@ class userController {
         { expiresIn: '2h' } //Временно время жизни 2ч для теста
       );
 
-      res.status(200).json({ token });
+      res.status(200).json(
+        { 
+          token, 
+          user: {
+            user_name: user.name, 
+            user_surname: user.surname,
+            user_login: user.email, 
+            user_nickname: user.nickname 
+          }
+        });
     } catch (err) {
       res.status(400).json(err.message)
     }
@@ -38,7 +47,7 @@ class userController {
 
   async regisration(req, res, next) {
     try {
-      const { name, email, password } = req.body;
+      const { name, surname, nickname, email, password } = req.body;
 
       if (!name || !email || !password) throw new Error("Недостаточно данных");
 
@@ -57,10 +66,10 @@ class userController {
       await db.query(
         `
           INSERT INTO users
-          (name, email, password_hash)
+          (name, surname, nickname, email, password_hash)
           VALUES
-          ($1, $2, $3)
-        `, [ name, email, passwordHash ]
+          ($1, $2, $3, $4, $5)
+        `, [ name, surname, nickname, email, passwordHash ]
       );
 
       res.status(201).json({ message: "OK" })
