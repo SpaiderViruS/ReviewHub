@@ -16,7 +16,7 @@
             <v-col cols="12" md="7">
               <h2 class="text-h4 font-weight-bold mb-2">{{ item.title }}</h2>
               <p class="text-grey mb-1">{{ item.release_year }} • {{ item.type_name }}</p>
-              <p class="mb-3">{{ item.description }}</p>
+              <p class="mb-3 item-desc">{{ item.description }}</p>
 
               <div class="d-flex align-center mb-2">
                 <v-icon color="yellow-darken-2" class="mr-1">mdi-star</v-icon>
@@ -75,7 +75,6 @@ onMounted(async () => {
   const { id } = route.params
   try {
     const res = await $api.get(`/item/${id}`);
-    console.log(res.data)
     item.value = res.data;
   } catch (e) {
     console.error('Ошибка загрузки:', e)
@@ -93,5 +92,8 @@ onMounted(async () => {
 .genre-chips {
   display: flex;
   flex-wrap: wrap;
+}
+.item-desc {
+  white-space: pre-wrap;
 }
 </style>
