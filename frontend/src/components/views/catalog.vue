@@ -50,13 +50,19 @@
           md="4"
           lg="3"
         >
-          <v-card class="content-card" :to="`/item/${item.id}`">
-            <v-img :src="item.cover" height="200px" />
-            <v-card-title class="text-wrap">{{ item.title }}</v-card-title>
-            <v-card-subtitle class="text-grey">{{ item.release_year }} • {{ item.genres.join(', ') }}</v-card-subtitle>
-            <v-card-text>
-              ⭐ {{ item.average_rating }} / 10
-            </v-card-text>
+          <v-card class="content-card" :to="`/item/${item.id}`" flat tile>
+            <v-img
+              :src="item.cover_url"
+              height="250px"
+              class="card-img"
+              cover
+            >
+              <div class="card-overlay">
+                <div class="card-title">{{ item.title }}</div>
+                <div class="card-subtitle">{{ item.release_year }} • {{ item.genres.join(', ') }}</div>
+                <div class="card-rating">⭐ {{ item.average_rating }} / 10</div>
+              </div>
+            </v-img>
           </v-card>
         </v-col>
       </template>
@@ -134,11 +140,44 @@ onMounted(async () => {
 .content-card {
   cursor: pointer;
   transition: transform 0.2s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background-color: transparent;
 }
 
 .content-card:hover {
   transform: scale(1.03);
 }
+
+.card-img {
+  border-radius: 12px;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.card-rating {
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
 
 .text-center {
   font-size: 1.5rem;
