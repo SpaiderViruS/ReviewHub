@@ -42,7 +42,7 @@ class reviewController {
       );
 
       // Если отзыв существует, то редактируем
-      if (existing.rows.length > 0) {
+      if (existingReview.rows.length > 0) {
         await db.query(
           `UPDATE reviews SET text = $1, updated_at = NOW() WHERE user_id = $2 AND item_id = $3`,
           [text, user_id, item_id]
