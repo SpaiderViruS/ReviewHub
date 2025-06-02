@@ -107,9 +107,9 @@ const filteredItems = computed(() => {
   }
 
   if (sortOption.value === 'По рейтингу') {
-    result = result.sort((a, b) => b.rating - a.rating)
+    result = result.sort((a, b) => b.average_rating - a.average_rating)
   } else if (sortOption.value === 'По году') {
-    result = result.sort((a, b) => b.year - a.year)
+    result = result.sort((a, b) => b.release_year - a.release_year)
   } else if (sortOption.value === 'По алфавиту') {
     result = result.sort((a, b) => a.title.localeCompare(b.title))
   }
