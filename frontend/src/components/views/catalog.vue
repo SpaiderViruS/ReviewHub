@@ -4,7 +4,7 @@
     <p class="catalog-subtext mb-8">Просматривайте, фильтруйте и оценивайте фильмы, игры и книги</p>
 
     <v-row class="mb-6" align="center" justify="space-between">
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="3">
         <v-text-field
           v-model="search"
           label="Поиск по названию"
@@ -21,6 +21,19 @@
           item-title="value_short"
           item-value="id"
           label="Жанр"
+          hide-details
+          dense
+          outlined
+          return-object
+        />
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-select
+          v-model="selectedType"
+          :items="itemTypes"
+          item-title="value_full"
+          item-value="id"
+          label="Категория"
           hide-details
           dense
           outlined
@@ -86,9 +99,11 @@ const $api = inject('$api')
 const items = ref([])
 
 const genres = ref([]);
+const itemTypes = ref([]);
 
 const search = ref('');
 const selectedGenre = ref(null);
+const selectedType = ref(null);
 const sortOption = ref(null);
 
 const sortOptions = [ 'По рейтингу', 'По году', 'По алфавиту' ]
@@ -106,6 +121,10 @@ const filteredItems = computed(() => {
     )
   }
 
+  if (selectedType.value) {
+    result = result.filter(i => i.type_id === selectedType.value.id)
+  }
+
   if (sortOption.value === 'По рейтингу') {
     result = result.sort((a, b) => b.average_rating - a.average_rating)
   } else if (sortOption.value === 'По году') {
@@ -120,6 +139,7 @@ const filteredItems = computed(() => {
 onMounted(async () => {
   const result = await useDictionaries($api)
   genres.value = result.genres
+  itemTypes.value = result.itemTypes
 
   const allItems = await $api.get('/item/');
   items.value = allItems.data;
