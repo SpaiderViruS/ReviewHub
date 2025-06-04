@@ -66,8 +66,7 @@ const logout = () => {
 }
 
 const goToProfile = () => {
-  console.log(`profile`)
-  // router.push('/profile')
+  router.push('/profile')
 }
 </script>
 <style scoped>
