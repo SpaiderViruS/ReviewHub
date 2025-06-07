@@ -5,6 +5,13 @@ CREATE TABLE item_types (
   value_short TEXT NOT NULL
 );
 
+-- Роли
+CREATE TABLE users_roles (
+  id SERIAL PRIMARY KEY,
+  value_full TEXT NOT NULL,
+  value_short TEXT NOT NULL
+);
+
 -- Пользователи
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -12,7 +19,8 @@ CREATE TABLE users (
   surname character varying(120),
   nickname character varying(120),
   email TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL
+  password_hash TEXT NOT NULL,
+  id_role INTEGER NOT NULL REFERENCES users_roles(id_code) ON DELETE CASCADE
 );
 
 -- Основной каталог (фильмы / игры / книги)
