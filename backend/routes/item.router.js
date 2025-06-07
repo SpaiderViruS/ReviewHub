@@ -4,6 +4,7 @@ const router = new Router();
 const itemController = require('../controllers/item.controller');
 
 router.get('/', itemController.getItems);
+router.get('/popular', itemController.getPopularsItems)
 router.get('/:id', itemController.getCurrentItem);
 
 module.exports = router;

@@ -67,6 +67,25 @@ class itemController {
       res.status(400).json(err.message);
     }
   }
+
+  async getPopularsItems(req, res, next) {
+    try {
+      const data = await db.query(
+        `
+          SELECT i.id, i.title, i.cover_url,
+            COALESCE(AVG(r.rating), 0) AS avg_rating
+          FROM items i
+          LEFT JOIN ratings r ON r.item_id = i.id
+          GROUP BY i.id
+          ORDER BY avg_rating DESC
+          LIMIT 10
+      `);
+      res.status(200).json(data.rows);
+    } catch (err) {
+      console.log(err);
+      res.status(400).json(err.message)
+    }
+  }
 }
 
 module.exports = new itemController();
