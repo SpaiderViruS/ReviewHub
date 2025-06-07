@@ -4,6 +4,7 @@ import MainComponent from '@/components/index.vue';
 import catalog from '@/components/views/catalog.vue';
 import authorization from '@/components/views/authorization.vue';
 import registration from '@/components/views/registration.vue';
+import profile from '@/components/views/profile.vue';
 import itemMain from '@/components/views/itemView/itemMain.vue';
 
 // 404
@@ -14,6 +15,7 @@ const routes = [
   { path: '/catalog', component: catalog },
   { path: '/login', component: authorization },
   { path: '/registration', component: registration },
+  { path: '/profile', component: profile },
 
   { path: '/item/:id', component: itemMain },
 
