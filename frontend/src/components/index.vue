@@ -16,14 +16,44 @@
     </v-row>
 
     <!-- Популярное -->
-    <h2 class="mt-16 mb-6">Популярное сейчас</h2>
-    <v-row justify="center">
-      <v-col cols="12" sm="6" md="3" v-for="i in 4" :key="i">
-        <v-card class="popular-card" height="200px">
-          <v-card-text class="text-grey">Карточка #{{ i }}</v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+    <v-container class="mt-16 mb-6">
+      <h2 class="mb-4 ml-auto mr-auto catalog-title">Популярные по рейтингу</h2>
+      <v-row v-if="loading">
+        <v-col
+          v-for="n in 4"
+          :key="n"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+        >
+          <v-skeleton-loader type="card" class="rounded" height="280px" />
+        </v-col>
+      </v-row>
+
+      <v-slide-group v-else show-arrows class="popular-slide-group">
+        <div
+          v-for="item in items"
+          :key="item.id"
+        >
+          <router-link :to="`/item/${item.id}`" class="slide-card-link">
+            <v-card class="content-card" flat tile>
+              <v-img
+                :src="item.cover_url"
+                height="280px"
+                class="card-img"
+                cover
+              >
+                <div class="card-overlay">
+                  <div class="card-title">{{ item.title }}</div>
+                  <div class="card-rating">⭐ {{ Number(item.avg_rating).toFixed(1) }} / 10</div>
+                </div>
+              </v-img>
+            </v-card>
+          </router-link>
+        </div>
+      </v-slide-group>
+    </v-container>
 
     <!-- Кнопка перехода в каталог -->
     <router-link to="/catalog">
@@ -34,11 +64,15 @@
 <script>
 export default {
   name: 'MainComponent',
-
+  data() {
+    return {
+      items: [],
+      loading: true
+    }
+  },
   computed: {
     categories() {
-      // Пример для роута /catalog?type=movie
-      const categories = [
+      return [ 
         {
           label: '🎬 Фильмы',
           route: '#',
@@ -58,9 +92,18 @@ export default {
           label: 'Аниме',
           route: '#',
           image: '/images/animeCategory.png'
-        }
+        } 
       ];
-      return categories;
+    }
+  },
+  async mounted() {
+    try {
+      const res = await this.$api.get('/item/popular');
+      this.items = res.data;
+    } catch (err) {
+      console.error('Ошибка загрузки популярных:', err);
+    } finally {
+      this.loading = false;
     }
   }
 }
@@ -126,13 +169,52 @@ a.router-link-exact-active {
 }
 
 /* Популярное */
-.popular-card {
-  background-color: #3a3a3a;
-  color: #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
+.popular-slide-group {
+  padding: 0 12px;
+}
+
+.slide-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: 360px;
+  margin: 4px;
+}
+
+.content-card {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background-color: transparent;
+}
+
+.content-card:hover {
+  transform: scale(1.04);
+}
+
+.card-img {
+  border-radius: 12px;
+}
+
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.card-rating {
+  font-size: 0.9rem;
+  margin-top: 4px;
 }
 
 /* Кнопка "Перейти в каталог" */
