@@ -5,6 +5,7 @@
       <div class="footer-links">
         <a href="https://t.me/spaidervirus" target="_blank">Telegram</a>
         <a href="mailto:emel07827@gmail.com">Почта</a>
+        <router-link to="/privacy">Конфеденциальность</router-link>
         <router-link to="/about">О проекте</router-link>
       </div>
     </div>
