@@ -25,9 +25,9 @@ class userController {
       if (!match) return res.status(401).json({ message: "Неверный email или пароль" });
 
       const token = jwt.sign(
-        { id: user.id, email: user.email }, // Полезная нагрузка
+        { id: user.id, email: user.email, role: user.id_role }, // Полезная нагрузка
         SECRET_KEY,
-        { expiresIn: '2h' } //Временно время жизни 2ч для теста
+        { expiresIn: '7d' } //Временно время жизни 7d для теста
       );
 
       res.status(200).json(
