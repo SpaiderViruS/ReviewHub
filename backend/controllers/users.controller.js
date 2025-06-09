@@ -37,7 +37,8 @@ class userController {
             user_name: user.name, 
             user_surname: user.surname,
             user_login: user.email, 
-            user_nickname: user.nickname 
+            user_nickname: user.nickname,
+            user_role: user.id_role
           }
         });
     } catch (err) {
@@ -74,6 +75,30 @@ class userController {
 
       res.status(201).json({ message: "OK" })
     } catch (err) {
+      res.status(400).json(err.message)
+    }
+  }
+
+  async getAllUsers(req, res, next) {
+    try {
+      const data = await db.query(
+        `
+          SELECT 
+            u.id,
+            u.name,
+            u.surname,
+            u.nickname,
+            u.email,
+
+            r.id AS id_role,
+            r.value_full
+          FROM users AS u
+          JOIN users_roles AS r ON r.id = u.id_role
+        `
+      );
+
+      res.status(200).json(data.rows)
+    } catch(err) {
       res.status(400).json(err.message)
     }
   }
