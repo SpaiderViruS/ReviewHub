@@ -51,4 +51,13 @@ const currentYear = new Date().getFullYear()
 .footer-links router-link:hover {
   color: var(--color-accent, #e94560);
 }
+
+@media (min-width: 640px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+}
 </style>
