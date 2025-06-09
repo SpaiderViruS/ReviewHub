@@ -10,6 +10,9 @@ import itemMain from '@/components/views/itemView/itemMain.vue';
 import aboutProject from '@/components/views/footerViews/aboutProject.vue';
 import privacyPolicy from '@/components/views/footerViews/privacyPolicy.vue';
 
+// Admin Components
+import adminUsers from '@/components/views/adminViews/adminUsers.vue';
+
 // 404
 import EmptyPage from '@/components/views/emptyPage.vue';
 
@@ -23,6 +26,8 @@ const routes = [
   
   { path: '/about', component: aboutProject },
   { path: '/privacy', component: privacyPolicy },
+
+  { path: '/admin/users', component: adminUsers },
 
   // 404
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: EmptyPage }
