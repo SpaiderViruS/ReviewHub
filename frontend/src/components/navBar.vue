@@ -4,9 +4,15 @@
       <v-icon>mdi-menu</v-icon>
     </div>
 
+    <!-- Меню для мобилок -->
     <div class="mobile-menu" v-if="isMobileMenuOpen">
       <router-link to="/" class="nav-link">Главная</router-link>
       <router-link to="/catalog" class="nav-link">Каталог</router-link>
+
+      <router-link to="/admin/users" class="nav-link">Пользователи</router-link>
+      <router-link to="/admin/add-item" class="nav-link">Добавить item</router-link>
+      <router-link to="/admin/statistics" class="nav-link">Статистика</router-link>
+
       <router-link v-if="!user" to="/login" class="nav-link">Авторизация</router-link>
       <router-link v-else to="/profile" class="nav-link">{{ user.user_nickname }}</router-link>
       <v-btn v-if="user" @click="logout" class="exit-btn">Выйти</v-btn>
@@ -16,12 +22,21 @@
     <div class="nav-container">
     <router-link to="/" class="nav-link">Главная</router-link>
     <router-link to="/catalog" class="nav-link">Каталог</router-link>
+
+    <div class="nav-link admin-dropdown" v-if="user?.user_role === 3">
+      <span>Администрирование</span>
+      <div class="admin-dropdown-menu">
+        <router-link to="/admin/users">Пользователи</router-link>
+        <router-link to="/admin/add-item">Добавить item</router-link>
+        <router-link to="/admin/statistics">Статистика</router-link>
+      </div>
+    </div>
       
     <div class="mb-0 mt-auto ml-auto authorization" v-if="!user">
       <router-link to="/login" class="nav-link">Авторизация</router-link>
     </div>
-
-    <div v-else class="mb-0 mt-auto ml-auto user-profile">
+    
+    <div v-else class="mb-0 mt-auto ml-auto user-profile">      
       <div class="profile-box" @click="goToProfile">
         <v-icon :icon="'custom:userIcon'" class="mr-2"></v-icon>
         {{ user.user_nickname }}
@@ -47,6 +62,7 @@ const { user, clearUser } = useUser();
 
 const theme = ref('dark');
 const isMobileMenuOpen = ref(false)
+const isMobileDropdownOpen = ref(false);
 
 onMounted(() => {
   const storedTheme = localStorage.getItem('theme') || 'dark';
@@ -68,6 +84,10 @@ const logout = () => {
 const goToProfile = () => {
   console.log(`profile`)
   // router.push('/profile')
+}
+
+const toggleMobileDropdown = () => {
+  isMobileDropdownOpen.value = !isMobileDropdownOpen.value;
 }
 </script>
 <style scoped>
@@ -148,6 +168,55 @@ const goToProfile = () => {
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.admin-dropdown {
+  position: relative;
+}
+
+.admin-dropdown > span {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.admin-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-background-mute);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 10;
+  min-width: 180px;
+  flex-direction: column;
+}
+
+.admin-dropdown-menu a {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background-color 0.2s;
+}
+
+.admin-dropdown-menu a:hover {
+  background-color: rgba(233, 69, 96, 0.1);
+  color: #e94560;
+}
+
+.admin-dropdown:hover .admin-dropdown-menu {
+  display: flex;
+}
+
+.admin-dropdown-menu a {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  border-radius: 8px;
 }
 
 @media (max-width: 768px) {
