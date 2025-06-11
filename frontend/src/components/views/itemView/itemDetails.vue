@@ -14,7 +14,12 @@
             </v-col>
 
             <v-col cols="12" md="7">
-              <h2 class="text-h4 font-weight-bold mb-2">{{ item.title }}</h2>
+              <div class="d-flex justify-space-between align-center mb-2">
+                <h2 class="text-h4 font-weight-bold">{{ item.title }}</h2>
+                <v-btn v-if="user?.user_role === 3" icon @click="openEditDialog" color="var(--color-accent)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </div>
               <p class="text-grey mb-1">{{ item.release_year }} • {{ item.type_name }}</p>
               <p class="mb-3 item-desc">{{ item.description }}</p>
 
@@ -28,7 +33,7 @@
 
               <div class="genre-chips mt-4">
                 <v-chip
-                  v-for="genre in item.genres"
+                  v-for="genre in item.genres_titles"
                   :key="genre"
                   color="primary"
                   variant="outlined"
@@ -48,11 +53,19 @@
     <v-progress-circular indeterminate color="primary" size="48" />
     <p class="mt-4">Загрузка...</p>
   </v-container>
+
+  <editItemDialog
+    v-model="editDialog"
+    :editedItem="item"
+    @updated="fetchItem"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, inject } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUser } from '@/components/store/userStore';
+import editItemDialog from '../adminViews/dialogs/editItemDialog.vue';
 
 const $api = inject('$api')
 const route = useRoute()
@@ -60,18 +73,21 @@ const item = ref({
   average_rating: null,
   cover_url: null,
   description: null,
-  genres: null,
+  genres_titles: null,
   id: null,
   rating_count: null,
   release_year: null,
   title: null,
   type_id: null,
-  type_name: null
+  type_name: null,
+  genres_ids: []
 })
+const editDialog = ref(false)
+const { user } = useUser();
 
 const fallbackCover = 'https://via.placeholder.com/300x400?text=Нет+обложки'
 
-onMounted(async () => {
+const fetchItem = async () => {
   const { id } = route.params
   try {
     const res = await $api.get(`/item/${id}`);
@@ -79,7 +95,15 @@ onMounted(async () => {
   } catch (e) {
     console.error('Ошибка загрузки:', e)
   }
+}
+
+onMounted(async () => {
+  fetchItem();
 })
+
+const openEditDialog = () => {
+  editDialog.value = true;
+}
 </script>
 
 <style scoped>
