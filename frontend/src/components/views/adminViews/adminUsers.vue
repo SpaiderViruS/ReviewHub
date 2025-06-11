@@ -21,7 +21,6 @@
         hide-details
         dense
         outlined
-        @input="handleSearch"
       />
 
       <table class="users-table">
@@ -57,7 +56,7 @@
                 icon
                 color="error"
                 @click="confirmDelete(user)"
-                class="action-btn"
+                class="action-btn ml-5"
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
@@ -72,7 +71,7 @@
       <v-card>
         <v-card-title>Подтверждение удаления</v-card-title>
         <v-card-text>
-          Вы уверены, что хотите удалить пользователя {{ userToDelete?.full_name }}?
+          Вы уверены, что хотите удалить пользователя {{ userToDelete?.name }} {{ userToDelete?.surname }}?
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -82,17 +81,18 @@
       </v-card>
     </v-dialog>
 
-    <!-- <user-edit-dialog
+    <user-edit-dialog
       v-model="editDialog"
+      :modelValue="editDialog"
       :user="editedUser"
       @save="handleSave"
-    /> -->
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed, inject } from 'vue';
-// import UserEditDialog from '@/components/admin/UserEditDialog.vue';
+import userEditDialog from './dialogs/userEditDialog.vue';
 
 const $api = inject('$api');
 
@@ -119,9 +119,11 @@ const confirmDelete = (user) => {
   deleteDialog.value = true;
 };
 
-const deleteUser = () => {
+const deleteUser = async () => {
+  const idDelete = users.value.find(id => id.id === userToDelete.value.id);
   users.value = users.value.filter(u => u.id !== userToDelete.value.id);
   deleteDialog.value = false;
+  await $api.delete(`/users/${idDelete.id}`)
 };
 
 const filteredUsers = computed(() => {
@@ -138,17 +140,19 @@ const filteredUsers = computed(() => {
 });
 });
 
-const handleSave = (userData) => {
+const handleSave = async (userData) => {
   if (userData.id) {
     // Обновление существующего пользователя
     const index = users.value.findIndex(u => u.id === userData.id);
     if (index !== -1) {
       users.value[index] = userData;
     }
+    await $api.put(`/users/${userData.id}`, userData)
   } else {
     // Добавление нового пользователя
     const newId = Math.max(...users.value.map(u => u.id)) + 1;
     users.value.push({ ...userData, id: newId });
+    await $api.post(`/users/registration`, userData)
   }
   editDialog.value = false;
 };
@@ -179,6 +183,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.v-card {
+  background: var(--color-background-soft);
+  color: var(--color-text);
+}
+
 .users-admin-container {
   padding: 20px;
   background: var(--color-background-soft);
