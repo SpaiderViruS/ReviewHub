@@ -9,9 +9,9 @@
       <router-link to="/" class="nav-link">Главная</router-link>
       <router-link to="/catalog" class="nav-link">Каталог</router-link>
 
-      <router-link to="/admin/users" class="nav-link">Пользователи</router-link>
-      <router-link to="/admin/add-item" class="nav-link">Добавить item</router-link>
-      <router-link to="/admin/statistics" class="nav-link">Статистика</router-link>
+      <router-link v-if="user?.user_role === 3" to="/admin/users" class="nav-link">Пользователи</router-link>
+      <router-link v-if="user?.user_role === 3" to="/admin/add-item" class="nav-link">Добавить item</router-link>
+      <router-link v-if="user?.user_role === 3" to="/admin/statistics" class="nav-link">Статистика</router-link>
 
       <router-link v-if="!user" to="/login" class="nav-link">Авторизация</router-link>
       <router-link v-else to="/profile" class="nav-link">{{ user.user_nickname }}</router-link>
