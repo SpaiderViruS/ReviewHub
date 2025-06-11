@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useUser } from '@/components/store/userStore'
+
 import MainComponent from '@/components/index.vue';
 import catalog from '@/components/views/catalog.vue';
 import authorization from '@/components/views/authorization.vue';
@@ -12,6 +14,7 @@ import privacyPolicy from '@/components/views/footerViews/privacyPolicy.vue';
 
 // Admin Components
 import adminUsers from '@/components/views/adminViews/adminUsers.vue';
+import addItem from '@/components/views/adminViews/addItem.vue';
 
 // 404
 import EmptyPage from '@/components/views/emptyPage.vue';
@@ -27,7 +30,14 @@ const routes = [
   { path: '/about', component: aboutProject },
   { path: '/privacy', component: privacyPolicy },
 
-  { path: '/admin/users', component: adminUsers },
+  {
+    path: '/admin',
+    meta: { requiresAuth: true },
+    children: [
+      { path: 'users', component: adminUsers },
+      { path: 'add-item', component: addItem }
+    ],
+  },
 
   // 404
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: EmptyPage }
@@ -37,5 +47,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
+
+const { user } = useUser()
+
+router.beforeEach((to, from, next) => {
+  const isAdmin = user?.value?.user_role === 3;
+  if (to.meta.requiresAuth && !isAdmin) {
+    next('/');
+  } else {
+    next();
+  }
+});
 
 export default router
