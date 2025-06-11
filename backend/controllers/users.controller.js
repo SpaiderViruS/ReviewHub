@@ -102,6 +102,58 @@ class userController {
       res.status(400).json(err.message)
     }
   }
+
+  async editUser(req, res, next) {
+    try {
+      const { name, surname, nickname, email, password } = req.body;
+      const id = req.params.id;
+
+      const fields = ['name', 'surname', 'nickname', 'email'];
+      const values = [name, surname, nickname, email];
+      const sets = ['name = $1', 'surname = $2', 'nickname = $3', 'email = $4'];
+      
+      if (password) {
+        // Шифрование пароля
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+        fields.push('password');
+        values.push(passwordHash);
+        sets.push(`password = $${values.length}`);
+      }
+
+      values.push(id);
+      const idPosition = values.length;
+
+      const query = `
+        UPDATE users
+        SET ${sets.join(', ')}
+        WHERE id = $${idPosition}
+      `;
+
+      await db.query(query, values);
+
+      res.status(200).json("OK");
+    } catch (err) {
+      res.status(400).json(err.message);
+    }
+  }
+
+  async deleteUser(req, res, next) {
+    try {
+      const id = req.params.id;
+
+      await db.query(
+        `
+          DELETE FROM users
+          WHERE id = $1
+        `, [ id ]
+      )
+
+      res.status(204).json("OK")
+    } catch (err) {
+      res.status(400).json(err.message)
+    }
+  }
 }
 
 module.exports = new userController();
