@@ -9,7 +9,7 @@ class statisticContoller {
         db.query("SELECT COUNT(*) FROM ratings"),
       ]);
 
-      res.json({
+      res.status(200).json({
         total_items: parseInt(itemsRes.rows[0].count),
         total_users: parseInt(usersRes.rows[0].count),
         total_ratings: parseInt(ratingsRes.rows[0].count),
@@ -31,7 +31,7 @@ class statisticContoller {
       LIMIT 5
     `);
 
-      res.json(rows);
+      res.status(200).json(rows);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -47,7 +47,59 @@ class statisticContoller {
         ORDER BY release_year
       `);
 
-      res.json(rows);
+      res.status(200).json(rows);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  async mostDiscosing(req, res) {
+    try {
+      const { rows } = await db.query(
+        `
+        SELECT i.title, COUNT(r.id) AS review_count
+        FROM items i
+        JOIN reviews r ON i.id = r.item_id
+        GROUP BY i.id
+        ORDER BY review_count DESC
+        LIMIT 5;
+        `
+      );
+
+      res.status(200).json(rows)
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  async getMostFavorites(req, res) {
+    try {
+      const { rows } = await db.query(`
+        SELECT i.title, COUNT(f.id) AS favorites_count
+        FROM items i
+        JOIN favorites f ON i.id = f.item_id
+        GROUP BY i.id
+        ORDER BY favorites_count DESC
+        LIMIT 5;
+      `);
+
+      res.status(200).json(rows);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  async typesCountForDiagramm(req, res) {
+    try {
+      const { rows } = await db.query(`
+        SELECT t.value_full, COUNT(*) AS total
+        FROM items i
+        JOIN item_types t ON i.type_id = t.id
+        GROUP BY t.value_full
+        ORDER BY total DESC;  
+      `);
+
+      res.status(200).json(rows);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
