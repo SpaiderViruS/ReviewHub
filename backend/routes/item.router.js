@@ -3,14 +3,15 @@ const router = new Router();
 
 const itemController = require('../controllers/item.controller');
 
-const authMiddleware = require('../middleware/auth.middleware')
+const authMiddleware = require('../middleware/auth.middleware');
+const adminMiddleware = require('../middleware/admin.middleware');
 
 router.get('/', itemController.getItems);
 router.get('/popular', itemController.getPopularsItems)
 router.get('/:id', itemController.getCurrentItem);
 
 // Admin routes
-router.post('/', authMiddleware, itemController.createItem);
-router.put('/:id', authMiddleware, itemController.editItem);
+router.post('/', authMiddleware, adminMiddleware, itemController.createItem);
+router.put('/:id', authMiddleware, adminMiddleware, itemController.editItem);
 
 module.exports = router;
