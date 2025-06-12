@@ -19,6 +19,9 @@
                 <v-btn v-if="user?.user_role === 3" icon @click="openEditDialog" color="var(--color-accent)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
+                <v-btn v-if="user" icon @click="addToFavorites" color="var(--color-accent)">
+                  <v-icon>mdi-heart</v-icon>
+                </v-btn>
               </div>
               <p class="text-grey mb-1">{{ item.release_year }} • {{ item.type_name }}</p>
               <p class="mb-3 item-desc">{{ item.description }}</p>
@@ -103,6 +106,15 @@ onMounted(async () => {
 
 const openEditDialog = () => {
   editDialog.value = true;
+}
+
+const addToFavorites = async() => {
+  const { id } = route.params
+  try {
+    await $api.post(`/item/favorites/${id}`)
+  } catch (e) {
+    console.error('Ошибка загрузки:', e)
+  }
 }
 </script>
 
