@@ -36,7 +36,7 @@ app.use(upload.single('file'));
 
 app.use(cors());
 
-app.use(logger);
+if (process.env.NODE_ENV !== 'production') app.use(logger);
 
 app.use('/item', itemRouter);
 app.use('/dictionary', dictRouter);
