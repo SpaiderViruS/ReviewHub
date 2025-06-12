@@ -5,6 +5,7 @@
       <div class="footer-links">
         <a href="https://t.me/spaidervirus" target="_blank">Telegram</a>
         <a href="mailto:emel07827@gmail.com">Почта</a>
+        <a href="https://brendbook.onrender.com/">Брендбук</a>
         <router-link to="/privacy">Конфеденциальность</router-link>
         <router-link to="/about">О проекте</router-link>
       </div>
@@ -38,6 +39,7 @@ const currentYear = new Date().getFullYear()
   display: flex;
   gap: 1rem;
   margin-top: 0.5rem;
+  flex-direction: column;
 }
 
 .footer-links a,
@@ -58,6 +60,10 @@ const currentYear = new Date().getFullYear()
     justify-content: space-between;
     align-items: center;
     text-align: left;
+  }
+  .footer-links {
+    display: flex;
+    flex-direction: row;
   }
 }
 </style>
