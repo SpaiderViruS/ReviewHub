@@ -15,6 +15,7 @@ import privacyPolicy from '@/components/views/footerViews/privacyPolicy.vue';
 // Admin Components
 import adminUsers from '@/components/views/adminViews/adminUsers.vue';
 import addItem from '@/components/views/adminViews/addItem.vue';
+import statistic from '@/components/views/adminViews/statistic.vue';
 
 // 404
 import EmptyPage from '@/components/views/emptyPage.vue';
@@ -35,7 +36,8 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'users', component: adminUsers },
-      { path: 'add-item', component: addItem }
+      { path: 'add-item', component: addItem },
+      { path: 'statistics', component: statistic }
     ],
   },
 
