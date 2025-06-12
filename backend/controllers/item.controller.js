@@ -159,6 +159,55 @@ class itemController {
       res.status(400).json(err.message)
     }
   }
+
+  async getFavoritesItems(req, res, next) {
+    try {
+      const id = req.user.id;
+
+      if (!id) throw new Error("Недостаточно данных");
+
+      const data = await db.query(
+        `
+          SELECT 
+            it.title,
+            it.release_year,
+            it.cover_url,
+            
+            tp.value_full AS type_name
+          FROM favorites AS fav
+          JOIN items AS it ON it.id = fav.item_id
+          JOIN item_types AS tp ON tp.id = it.type_id
+          WHERE fav.user_id = $1
+        `, [ id ]
+      );
+
+      res.status(200).json(data.rows);
+    } catch(err) {
+      res.status(400).json(err.message)
+    }
+  }
+
+    async addToFavorites(req, res, next) {
+      try {
+        const itemId = req.params.id;
+        const userId = req.user.id;
+
+        if (!itemId || !userId) throw new Error("Недостаточно данных");
+
+        await db.query(
+          `
+            INSERT INTO favorites
+            (user_id, item_id)
+            VALUES
+            ($1, $2)
+          `, [ userId, itemId ]
+        );
+
+        res.status(201).json("OK")
+      } catch(err) {
+        res.status(400).json(err.message);
+      }
+    }
 }
 
 module.exports = new itemController();
