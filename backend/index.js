@@ -13,6 +13,7 @@ const itemRouter = require('./routes/item.router');
 const dictRouter = require('./routes/dictionary.router');
 const userRouter = require('./routes/users.router');
 const reviewRouter = require('./routes/reviews.router');
+const statsRouter = require('./routes/statistic.router')
 
 const upload = multer();
 
@@ -41,6 +42,7 @@ app.use('/item', itemRouter);
 app.use('/dictionary', dictRouter);
 app.use('/users', userRouter);
 app.use('/reviews', reviewRouter);
+app.use('/stats', statsRouter)
 
 // app.use('/test', authMiddleware, rotuer)
 
