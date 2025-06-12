@@ -7,6 +7,7 @@ import catalog from '@/components/views/catalog.vue';
 import authorization from '@/components/views/authorization.vue';
 import registration from '@/components/views/registration.vue';
 import itemMain from '@/components/views/itemView/itemMain.vue';
+import userProfile from '@/components/views/userProfile.vue';
 
 // Footer Components
 import aboutProject from '@/components/views/footerViews/aboutProject.vue';
@@ -25,6 +26,7 @@ const routes = [
   { path: '/catalog', component: catalog },
   { path: '/login', component: authorization },
   { path: '/registration', component: registration },
+  { path: '/profile', component: userProfile },
   
   { path: '/item/:id', component: itemMain },
   
