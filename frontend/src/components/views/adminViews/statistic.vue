@@ -19,9 +19,27 @@
     </v-card>
 
     <!-- Распределение по годам -->
-    <v-card class="pa-4 stat-card">
+    <v-card class="pa-4 my-6 stat-card">
       <h3 class="mb-3">Распределение по годам</h3>
       <canvas id="yearChart" height="250"></canvas>
+    </v-card>
+
+    <!-- Круговая диаграмма типов контента (распределение по категориям) -->
+    <v-card class="pa-4 stat-card">
+      <h3 class="mb-3">Круговая диаграмма типов контента (распределение по категориям)</h3>
+      <canvas id="total_types" height="250"></canvas>
+    </v-card>
+
+    <!-- Самое обсуждаемое произведение (по количеству отзывов) -->
+    <v-card class="pa-4 my-6 stat-card">
+      <h3 class="mb-3">Самое обсуждаемое произведение (по количеству отзывов)</h3>
+      <canvas id="mostDiscussedChart" height="250"></canvas>
+    </v-card>
+
+    <!-- Самое обсуждаемое произведение (по количеству отзывов) -->
+    <v-card class="pa-4 my-6 stat-card">
+      <h3 class="mb-3">Самое добавляемое в избранное</h3>
+      <canvas id="mostFavoriteChart" height="250"></canvas>
     </v-card>
   </v-container>
 </template>
@@ -39,10 +57,13 @@ const stats = ref([
 ])
 
 onMounted(async () => {
-  const [counts, topRated, years] = await Promise.all([
+  const [counts, topRated, years, mostDisc, mostFav, typePie] = await Promise.all([
     $api.get('/stats/counts'), 
     $api.get('/stats/top-rated'),
-    $api.get('/stats/by-year')
+    $api.get('/stats/by-year'),
+    $api.get('/stats/most-disc'),
+    $api.get('/stats/most-favorite'),
+    $api.get('/stats/counting-types'),
   ])
 
   stats.value[0].value = counts.data.total_items
@@ -51,6 +72,9 @@ onMounted(async () => {
 
   renderTopRatedChart(topRated.data)
   renderYearChart(years.data)
+  renderTypePieChart(typePie.data)
+  renderMostDiscussedChart(mostDisc.data)
+  renderMostFavoriteChart(mostFav.data)
 })
 
 function renderTopRatedChart(data) {
@@ -89,6 +113,75 @@ function renderYearChart(data) {
     options: {
       responsive: true,
       plugins: { legend: { display: false } }
+    }
+  })
+}
+
+function renderTypePieChart(data) {
+  const ctx = document.getElementById('total_types')
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: data.map(i => i.value_full),
+      datasets: [{
+        data: data.map(i => i.total),
+        backgroundColor: [
+          '#e94560', '#0f3460', '#03c988', '#ffc93c', '#845ec2', '#2c73d2'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.label}: ${ctx.parsed}`
+          }
+        }
+      }
+    }
+  })
+}
+
+function renderMostDiscussedChart(data) {
+  const ctx = document.getElementById('mostDiscussedChart')
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(i => i.title),
+      datasets: [{
+        label: 'Отзывы',
+        data: data.map(i => i.review_count),
+        backgroundColor: '#845ec2'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      indexAxis: 'y'
+    }
+  })
+}
+
+function renderMostFavoriteChart(data) {
+  const ctx = document.getElementById('mostFavoriteChart')
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(i => i.title),
+      datasets: [{
+        label: 'Избранное',
+        data: data.map(i => i.favorites_count),
+        backgroundColor: '#03c988'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      indexAxis: 'y'
     }
   })
 }
