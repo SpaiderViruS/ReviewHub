@@ -73,3 +73,19 @@ CREATE TABLE favorites (
   item_id INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
   UNIQUE (user_id, item_id)
 );
+
+
+INSERT INTO item_types (id, value_full, value_short) VALUES
+(1, 'Фильм', 'Фильм'),
+(2, 'Аниме', 'Аниме'),
+(3, 'Сериал', 'Сериал'),
+(4, 'Игра', 'Игра');
+
+INSERT INTO genres (id, value_full, value_short) VALUES
+(1, 'Фантастика', 'Фантастика'),
+(2, 'RPG', 'RPG'),
+(3, 'Антиутопия', 'Антиутопия'),
+(4, 'Драма', 'Драма'),
+(5, 'Экшен', 'Экшен'),
+(6, 'Триллер', 'Триллер'),
+(7, 'Фэнтези', 'Фэнтези');
