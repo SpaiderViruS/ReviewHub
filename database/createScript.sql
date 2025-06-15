@@ -20,7 +20,7 @@ CREATE TABLE users (
   nickname character varying(120),
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
-  id_role INTEGER NOT NULL REFERENCES users_roles(id_code) ON DELETE CASCADE
+  id_role INTEGER NOT NULL REFERENCES users_roles(id) ON DELETE CASCADE
 );
 
 -- Основной каталог (фильмы / игры / книги)
