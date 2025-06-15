@@ -1,7 +1,7 @@
 <template>
   <footer class="app-footer">
     <div class="footer-content">
-      <span>© {{ currentYear }} Разработано — <strong>SpaiderViruS (Аллагулов Э.Р.)</strong></span>
+      <span>© {{ currentYear }} Разработано — <strong>SpaiderViruS (Аллагулов Э.Р.)</strong>, <strong>DragonNill (Сафин И.М.)</strong></span>
       <div class="footer-links">
         <a href="https://t.me/spaidervirus" target="_blank">Telegram</a>
         <a href="mailto:emel07827@gmail.com">Почта</a>
