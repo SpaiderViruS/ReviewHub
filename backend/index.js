@@ -20,21 +20,21 @@ const upload = multer();
 app.use(express.json());
 app.use(upload.single('file'));
 
-// const allowedOrigins = [
-//   '', // Прод
-//   '' // локал
-// ];
-// app.use(cors({
-//   origin: (origin, callback) => {
-//   if (!origin || allowedOrigins.includes(origin)) {
-//     return callback(null, true);
-//   }
-//   return callback(new Error('Not allowed by CORS'));
-//   },
-//   credentials: true,
-// }));
+const allowedOrigins = [
+  'https://reviewhub-frontend-t93c.onrender.com', // Прод
+  'http://localhost:5173' // локал
+];
+app.use(cors({
+  origin: (origin, callback) => {
+  if (!origin || allowedOrigins.includes(origin)) {
+    return callback(null, true);
+  }
+  return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 
-app.use(cors());
+// app.use(cors());
 
 if (process.env.NODE_ENV !== 'production') app.use(logger);
 
