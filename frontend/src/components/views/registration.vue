@@ -71,6 +71,21 @@
       </v-col>
     </v-row>
   </v-container>
+
+  <template>
+    <v-container>
+      <v-btn color="primary" @click="showSnackbar('Данные сохранены')">Показать уведомление</v-btn>
+
+      <v-snackbar
+        v-model="snackBarModel"
+        :timeout="3000"
+        color="deep-purple-accent-4"
+        class="elevation-24"
+      >
+        {{ snackBarText }}
+      </v-snackbar>
+    </v-container>
+  </template>
 </template>
 
 <script setup>
@@ -86,6 +101,9 @@ const nickname = ref('');
 const email = ref('');
 const password = ref('');
 const formValid = ref(false);
+
+const snackBarText = ref('');
+const snackBarModel = ref(false);
 
 const rules = {
   required: v => !!v || 'Поле обязательно',
@@ -104,9 +122,13 @@ async function handleRegister() {
     });
 
     if (data?.message === 'OK') {
+      snackBarText.value = 'Вы успешно зарегистрировались'
+      snackBarModel.value = true;
       router.push('/login');
     }
   } catch (err) {
+    snackBarText.value = `Ошибка регистрации: ${err.response?.data?.message}`;
+    snackBarModel.value = true;
     console.error('Ошибка регистрации:', err.response?.data || err.message);
   }
 }
